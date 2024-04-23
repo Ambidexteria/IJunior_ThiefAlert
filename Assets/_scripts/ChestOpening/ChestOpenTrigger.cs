@@ -9,13 +9,13 @@ public class ChestOpenTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<ChestOpener>())
+        if (other.TryGetComponent(out ChestOpener chestOpener))
             _hasOpener = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<ChestOpener>())
+        if (other.TryGetComponent(out ChestOpener chestOpener))
             _hasOpener = false;
     }
 

@@ -7,13 +7,13 @@ public class AlertTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<Thief>() != null)
+        if (other.TryGetComponent(out Thief thief))
             _sound.Play();
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<Thief>() != null)
+        if (other.TryGetComponent(out Thief thief))
             _sound.Stop();
     }
 }

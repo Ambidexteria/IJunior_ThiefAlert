@@ -27,7 +27,7 @@ public class AlertSound : MonoBehaviour
 
         _audioSource.Play();
         _currentVolume = _audioSource.volume;
-        _increaseCorotine = StartCoroutine(IncreaseVolume());
+        _increaseCorotine = StartCoroutine(ChangeVolume(MaxVolume));
     }
 
     public void Stop()
@@ -36,41 +36,25 @@ public class AlertSound : MonoBehaviour
             StopCoroutine(_increaseCorotine);
 
         _currentVolume = _audioSource.volume;
-        _decreaseCorotine = StartCoroutine(DecreaseVolume());
+        _decreaseCorotine = StartCoroutine(ChangeVolume(MinVolume));
     }
-
-    private IEnumerator IncreaseVolume()
+ 
+    private IEnumerator ChangeVolume(float targetVolume)
     {
         bool isWork = true;
 
         while (isWork)
         {
-            _audioSource.volume = Mathf.Clamp01(Mathf.MoveTowards(_currentVolume, MaxVolume, _volumeChangeSpeed * Time.deltaTime));
+            _audioSource.volume = Mathf.Clamp01(Mathf.MoveTowards(_currentVolume, targetVolume, _volumeChangeSpeed * Time.deltaTime));
             _currentVolume = _audioSource.volume;
 
             yield return null;
 
-            if (_audioSource.volume == MaxVolume)
+            if (_audioSource.volume == targetVolume)
                 isWork = false;
-        }
-    }
 
-    private IEnumerator DecreaseVolume()
-    {
-        bool isWork = true;
-
-        while (isWork)
-        {
-            _audioSource.volume = Mathf.Clamp01(Mathf.MoveTowards(_currentVolume, MinVolume, _volumeChangeSpeed * Time.deltaTime));
-            _currentVolume = _audioSource.volume;
-
-            yield return null;
-
-            if (_audioSource.volume == MinVolume)
-            {
+            if(_audioSource.volume == MinVolume)
                 _audioSource.Pause();
-                isWork = false;
-            }
         }
     }
 }
